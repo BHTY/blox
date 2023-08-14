@@ -23,6 +23,7 @@ PieceColor dd 0
 PieceOrientation dd 0
 PiecePositionX dd 0
 PiecePositionY dd 0
+Score dd 0
 
 hInstance HINSTANCE ?
 CommandLine LPSTR ?
@@ -415,7 +416,7 @@ WmInitDialog:
 AboutDlgProc endp
 
 ; 
-; Draw into the compatible DC but then use some clipping magic to only update the important bits
+; Draw into the compatible DC but then use some clipping magic to only update the important bits in the real HDC
 ; 
 
 TickGame proc hwnd:HWND
