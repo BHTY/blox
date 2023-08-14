@@ -25,6 +25,9 @@ PiecePositionX dd 0
 PiecePositionY dd 0
 Score dd 0
 
+ClientSizeX dd 200
+ClientSizeY dd 400
+
 hInstance HINSTANCE ?
 CommandLine LPSTR ?
 hDC HDC ?
@@ -125,6 +128,7 @@ WinMain endp
 Init proc hInst:HINSTANCE
 	LOCAL wc:WNDCLASSA
 	LOCAL hWnd:HWND
+	LOCAL rect:RECT
 	
 	mov wc.style, CS_HREDRAW or CS_VREDRAW
 	mov wc.lpfnWndProc, OFFSET WndProc
@@ -150,13 +154,29 @@ Init proc hInst:HINSTANCE
 	push eax
 	call RegisterClassA
 	
+	mov rect.left, 0
+	mov rect.top, 0
+	mov eax, ClientSizeX
+	mov rect.right, eax
+	mov eax, ClientSizeY
+	mov rect.bottom, eax
+	push 0
+	push WS_OVERLAPPEDWINDOW + WS_VISIBLE
+	lea eax, rect
+	push eax
+	call AdjustWindowRect
+	
 ; create the wndow
 	push NULL ;no extra data
 	push hInst
 	push NULL ;use default menu handle
 	push NULL ;no parent window
-	push WindowHeight ;requested height
-	push WindowWidth ;requested width
+	mov eax, rect.bottom
+	sub eax, rect.top
+	push eax ;requested height
+	mov eax, rect.right
+	sub eax, rect.left
+	push eax ;requested width
 	push CW_USEDEFAULT ;X
 	push CW_USEDEFAULT ;Y
 	push WS_OVERLAPPEDWINDOW + WS_VISIBLE ;window style
@@ -221,14 +241,16 @@ WmPaint:
 	push hDC
 	call DrawBoard
 	
+	;draw current block
+	
 	push SRCCOPY
 	push 200
 	push 100
 	push 0
 	push 0
 	push hDC
-	push 200
-	push 100
+	push ClientSizeY
+	push ClientSizeX
 	push 0
 	push 0
 	push hdc
