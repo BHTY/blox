@@ -79,6 +79,15 @@ WinMain proc hInst:HINSTANCE, hPrevInst:HINSTANCE, CmdLine:LPSTR, CmdShow:DWORD
 	push eax
 	call CreateCompatibleDC
 	mov hDC, eax
+	
+	push 200
+	push 100
+	push tempHDC
+	call CreateCompatibleBitmap
+	push eax
+	push hDC
+	call SelectObject
+	
 	push tempHDC
 	push hwnd
 	call ReleaseDC
@@ -208,8 +217,21 @@ WmPaint:
 	call BeginPaint
 	mov hdc, eax
 
-	push eax ;push the device context we got
+	push hDC
 	call DrawBoard
+	
+	push SRCCOPY
+	push 200
+	push 100
+	push 0
+	push 0
+	push hDC
+	push 200
+	push 100
+	push 0
+	push 0
+	push hdc
+	call StretchBlt
 	
 	lea eax, ps
 	push eax
@@ -391,6 +413,10 @@ WmInitDialog:
 	ret
 
 AboutDlgProc endp
+
+; 
+; Draw into the compatible DC but then use some clipping magic to only update the important bits
+; 
 
 TickGame proc hwnd:HWND
 	local dc:HDC, rect:RECT
