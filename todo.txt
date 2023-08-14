@@ -1,0 +1,5 @@
+- Add functionality to the dialogs
+- Do all drawing to the compatible DC and then StretchBlt that to the screen
+- Limit to 16 colors of tiles - there will be a table of 16 brushes for each
+- User input
+- rand()
