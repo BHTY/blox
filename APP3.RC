@@ -32,6 +32,7 @@ BEGIN
         BEGIN
             MENUITEM "1X",                          ID_GAME_SCREENSIZE_1X
             MENUITEM "2X",                          ID_GAME_SCREENSIZE_2X
+            , CHECKED
             MENUITEM "Custom",                      ID_GAME_SCREENSIZE_CUSTOM
 
             MENUITEM "Fixed Window Size",           ID_GAME_SCREENSIZE_FIXEDWINDOWSIZE
