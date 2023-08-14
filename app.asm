@@ -32,6 +32,7 @@ hInstance HINSTANCE ?
 CommandLine LPSTR ?
 hDC HDC ?
 
+BrushTable HBRUSH 16 dup(0)
 array dword 200 dup(0)
 
 .CODE
