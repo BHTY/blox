@@ -29,7 +29,7 @@ ClientSizeX dd 200
 ClientSizeY dd 400
 
 ; Line piece type 1
-db 000h, 000h, 000h, 000h
+PieceTable db 000h, 000h, 000h, 000h
 db 0FFh, 0FFh, 0FFh, 0FFh
 db 000h, 000h, 000h, 000h
 db 000h, 000h, 000h, 000h
@@ -650,8 +650,6 @@ DrawShape proc brush:HBRUSH
 	local rect:RECT	
 	local left:DWORD
 	
-	ret
-	
 ; EAX holds the pointer to the current block
 ; ECX holds the current row counter
 ; EDX holds the current column counter
@@ -670,19 +668,22 @@ DrawShape proc brush:HBRUSH
 	add eax, 10
 	mov rect.bottom, eax
 	
-	lea ebx, PieceTable
-	mov eax, ActivePiece
-	dec eax
-	shl eax, 6
-	mov ecx, PieceOrientation
-	shl ecx, 4
-	add eax, ebx
-	add eax, ecx
+	;lea ebx, PieceTable
+	;mov eax, ActivePiece
+	;dec eax
+	;shl eax, 6
+	;mov ecx, PieceOrientation
+	;shl ecx, 4
+	;add eax, ebx
+	;add eax, ecx
+	
+	lea eax, PieceTable
+	
 	xor ecx, ecx
 	xor edx, edx
 
 drawloop:
-	mov ebx, [eax]
+	mov ebx, 0FFh;[eax]
 	cmp ebx, 0
 	je next
 	push brush
@@ -725,7 +726,7 @@ TickGame proc hwnd:HWND
 ; generate a new piece
 	call GetRand
 	mov ActivePiece, eax
-	;with a new color
+	mov PieceColor, 1
 
 TickPiece:
 	; erase the piece at its old position
