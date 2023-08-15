@@ -677,7 +677,7 @@ DrawShape proc brush:HBRUSH
 	add eax, ebx
 	add eax, ecx
 	
-	mov eax, OFFSET PieceTable
+	;mov eax, OFFSET PieceTable
 	
 	xor ecx, ecx
 	xor edx, edx
@@ -721,6 +721,8 @@ DrawShape endp
 
 ; 
 ; Draw into the compatible DC but then use some clipping magic to only update the important bits in the real HDC
+; The WndProc handles the actual input translation and sets appropriate state variables
+; Actually USING the input to control the game is inside of TickGame
 ; 
 
 TickGame proc hwnd:HWND
@@ -740,7 +742,7 @@ TickGame proc hwnd:HWND
 TickPiece:
 	; erase the piece at its old position
 	push [BrushTable+0]
-	;call DrawShape
+	call DrawShape
 	
 	; move it, collision detection, input, the works
 	inc PiecePositionY

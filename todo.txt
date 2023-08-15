@@ -2,7 +2,6 @@ Target Platform: Windows NT 3.1 / Windows Chicago / Win32s
 Win16 port oncoming: Windows 2.0 / 3.0
 
 - Add functionality to the dialogs
-- Limit to 16 colors of tiles - there will be a table of 16 brushes for each
 - User input
 - rand()
 
