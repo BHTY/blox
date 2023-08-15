@@ -783,7 +783,8 @@ TickGame proc hwnd:HWND
 ; generate a new piece
 	call GetRand
 	mov ActivePiece, eax
-	mov PieceColor, 2
+	call GetRand
+	mov PieceColor, eax
 
 TickPiece:
 	; erase the piece at its old position
