@@ -824,39 +824,9 @@ HittingFloor endp
 ; ESI holds the pointer to the current shape element while EBX holds the pointer to the playfield
 ; ECX holds a copy that's used every time we go to a new line
 ; EDX holds a counter (on every multiple of four, we roll over, on the sixteenth, we're done)
-; EAX holds temp values
+; EAX holds temp values (the color is ANDed with the current shape value)
 
 MergePiece proc
-	mov eax, PiecePositionY
-	mov ebx, 10
-	mul ebx
-	mov ecx, PiecePositionX
-	;mov ebx, OFFSET array
-	lea ebx, [array + ecx + eax] ;pointer to the screen data
-	mov ecx, ebx ;store a copy here
-	push ebx
-	push ecx
-	call ShapePtr
-	pop ecx
-	pop ebx
-	mov esi, eax
-	xor edx, edx
-	
-fill_loop:
-	mov al, [OFFSET PieceColor]
-	and al, [esi]
-	mov al, 002h
-	mov [ebx], al
-	inc esi
-	inc ebx
-	inc edx
-	test edx, 3
-	jne fill_loop
-	add ecx, 10
-	mov ebx, ecx
-	cmp edx, 16
-	jne fill_loop
-
 	mov ActivePiece, 0
 	ret
 MergePiece endp
@@ -874,6 +844,8 @@ TickGame proc hwnd:HWND
 	push hwnd
 	call GetDC
 	mov dc, eax
+	
+	; check for any row clears
 
 	cmp ActivePiece, 0
 	jne TickPiece
@@ -897,7 +869,7 @@ TickPiece:
 	call HittingFloor
 	jne HitFloor
 	
-	;or if it's hit another piece
+	;or if it's hit another piece (if it's also on the top, then GAME OVER!!!)
 	
 	cmp Rotating, 1
 	je rotate_piece
