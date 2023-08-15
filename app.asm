@@ -28,6 +28,11 @@ Score dd 0
 ClientSizeX dd 200
 ClientSizeY dd 400
 
+; Controls
+Rotating dd 0
+PressingLeft dd 0
+PressingRight dd 0
+
 ; Line piece type 1
 PieceTable db 000h, 000h, 000h, 000h
 db 0FFh, 0FFh, 0FFh, 0FFh
@@ -269,7 +274,7 @@ WinMain proc hInst:HINSTANCE, hPrevInst:HINSTANCE, CmdLine:LPSTR, CmdShow:DWORD
 	mov hwnd, eax
 	
 	push NULL
-	push 064h
+	push 080h
 	push 1
 	push hwnd
 	call SetTimer
@@ -404,6 +409,8 @@ WndProc proc hWnd:HWND, uMsg:UINT, wParam:WPARAM, lParam:LPARAM
 	je WmTimer
 	cmp uMsg, WM_KEYDOWN
 	je WmKeydown
+	cmp uMsg, WM_KEYUP
+	je WmKeyup
 	cmp uMsg, WM_DESTROY
 	je WmDestroy
 	cmp uMsg, WM_COMMAND
@@ -422,6 +429,47 @@ WmTimer:
 	jmp done
 	
 WmKeydown:
+	cmp wParam, 041h ;a key, move left
+	je move_left
+	cmp wParam, 053h ;s key, rotate
+	je rotate
+	cmp wParam, 044h ;d key, move right
+	je move_right
+	
+move_right:
+	mov PressingRight, 1
+	jmp done
+
+rotate:
+	mov Rotating, 1
+	jmp done
+	
+move_left:
+	mov PressingLeft, 1
+	jmp done
+
+	jmp done
+
+WmKeyup:
+	cmp wParam, 041h ;a key, move left
+	je stop_move_left
+	cmp wParam, 053h ;s key, rotate
+	je stop_rotate
+	cmp wParam, 044h ;d key, move right
+	je stop_move_right
+	
+stop_move_right:
+	mov PressingRight, 0
+	jmp done
+
+stop_rotate:
+	mov Rotating, 0
+	jmp done
+	
+stop_move_left:
+	mov PressingLeft, 0
+	jmp done
+
 	jmp done
 
 WmCommand:
@@ -495,7 +543,7 @@ HandleCommand proc hWnd:HWND, wParam:WPARAM
 	je custom
 	jmp done
 
-newgame:
+newgame: ;reset everything
 	jmp done
 
 custom:
@@ -677,8 +725,6 @@ DrawShape proc brush:HBRUSH
 	add eax, ebx
 	add eax, ecx
 	
-	;mov eax, OFFSET PieceTable
-	
 	xor ecx, ecx
 	xor edx, edx
 
@@ -747,6 +793,29 @@ TickPiece:
 	; move it, collision detection, input, the works
 	inc PiecePositionY
 	
+	cmp Rotating, 1
+	je rotate_piece
+	cmp PressingLeft, 1
+	je move_left
+	cmp PressingRight, 1
+	je move_right
+
+	jmp redraw
+
+move_right:
+	inc PiecePositionX
+	jmp redraw
+
+move_left:
+	dec PiecePositionX
+	jmp redraw
+
+rotate_piece:
+	inc PieceOrientation
+	and PieceOrientation, 3
+	jmp redraw
+	
+redraw:
 	; redraw it
 	mov eax, PieceColor
 	push [BrushTable+eax*4]
