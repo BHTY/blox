@@ -269,7 +269,7 @@ WinMain proc hInst:HINSTANCE, hPrevInst:HINSTANCE, CmdLine:LPSTR, CmdShow:DWORD
 	mov hwnd, eax
 	
 	push NULL
-	push 0Ah
+	push 064h
 	push 1
 	push hwnd
 	call SetTimer
@@ -668,32 +668,40 @@ DrawShape proc brush:HBRUSH
 	add eax, 10
 	mov rect.bottom, eax
 	
-	;lea ebx, PieceTable
-	;mov eax, ActivePiece
-	;dec eax
-	;shl eax, 6
-	;mov ecx, PieceOrientation
-	;shl ecx, 4
-	;add eax, ebx
-	;add eax, ecx
+	lea ebx, PieceTable
+	mov eax, ActivePiece
+	dec eax
+	shl eax, 6
+	mov ecx, PieceOrientation
+	shl ecx, 4
+	add eax, ebx
+	add eax, ecx
 	
-	lea eax, PieceTable
+	mov eax, OFFSET PieceTable
 	
 	xor ecx, ecx
 	xor edx, edx
 
 drawloop:
-	mov ebx, 0FFh;[eax]
-	cmp ebx, 0
+	mov bl, [eax]
+	cmp bl, 000h
 	je next
+	push eax
+	push ecx
+	push edx
 	push brush
 	lea ebx, rect
 	push ebx
 	push hDC
 	call FillRect
+	pop edx
+	pop ecx
+	pop eax
 next:
 	inc eax
 	inc edx
+	add rect.left, 10
+	add rect.right, 10
 	cmp edx, 4
 	jne drawloop
 	mov ebx, left
@@ -717,6 +725,7 @@ DrawShape endp
 
 TickGame proc hwnd:HWND
 	local dc:HDC, rect:RECT
+	
 	push hwnd
 	call GetDC
 	mov dc, eax
@@ -726,12 +735,12 @@ TickGame proc hwnd:HWND
 ; generate a new piece
 	call GetRand
 	mov ActivePiece, eax
-	mov PieceColor, 1
+	mov PieceColor, 2
 
 TickPiece:
 	; erase the piece at its old position
 	push [BrushTable+0]
-	call DrawShape
+	;call DrawShape
 	
 	; move it, collision detection, input, the works
 	inc PiecePositionY
@@ -740,8 +749,13 @@ TickPiece:
 	mov eax, PieceColor
 	push [BrushTable+eax*4]
 	call DrawShape
+	
 	; update the new region
-		
+	push 0
+	push 0
+	push hwnd
+	call InvalidateRect
+			
 	push dc
 	push hwnd
 	call ReleaseDC
