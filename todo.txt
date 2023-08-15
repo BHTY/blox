@@ -14,4 +14,3 @@ when there's a WM_PAINT message, it first draws the playfield then draws the sha
 when the game is ticked, it first draws the shape with a black brush, then moves it, then redraws it with the appropriate brush
 and all of this is done into the Compatible DC
 when the game is ticked, however, it has to manually calculate and redraw the bad regions on the window
-

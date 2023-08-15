@@ -28,11 +28,158 @@ Score dd 0
 ClientSizeX dd 200
 ClientSizeY dd 400
 
+; Line piece type 1
+db 000h, 000h, 000h, 000h
+db 0FFh, 0FFh, 0FFh, 0FFh
+db 000h, 000h, 000h, 000h
+db 000h, 000h, 000h, 000h
+; Line piece type 2
+db 000h, 000h, 0FFh, 000h
+db 000h, 000h, 0FFh, 000h
+db 000h, 000h, 0FFh, 000h
+db 000h, 000h, 0FFh, 000h
+; Line piece type 3
+db 000h, 000h, 000h, 000h
+db 000h, 000h, 000h, 000h
+db 0FFh, 0FFh, 0FFh, 0FFh
+db 000h, 000h, 000h, 000h
+; Line piece type 4
+db 000h, 0FFh, 000h, 000h
+db 000h, 0FFh, 000h, 000h
+db 000h, 0FFh, 000h, 000h
+db 000h, 0FFh, 000h, 000h
+
+; L piece 1 type 1
+db 0FFh, 000h, 000h, 000h
+db 0FFh, 0FFh, 0FFh, 000h
+db 000h, 000h, 000h, 000h
+db 000h, 000h, 000h, 000h
+; L piece 1 type 2
+db 000h, 0FFh, 0FFh, 000h
+db 000h, 0FFh, 000h, 000h
+db 000h, 0FFh, 000h, 000h
+db 000h, 000h, 000h, 000h
+; L piece 1 type 3
+db 000h, 000h, 000h, 000h
+db 0FFh, 0FFh, 0FFh, 000h
+db 000h, 000h, 0FFh, 000h
+db 000h, 000h, 000h, 000h
+; L piece 1 type 4
+db 000h, 0FFh, 000h, 000h
+db 000h, 0FFh, 000h, 000h
+db 0FFh, 0FFh, 000h, 000h
+db 000h, 000h, 000h, 000h
+
+; L piece 2 type 1
+db 000h, 000h, 0FFh, 000h
+db 0FFh, 0FFh, 0FFh, 000h
+db 000h, 000h, 000h, 000h
+db 000h, 000h, 000h, 000h
+; L piece 2 type 2
+db 000h, 0FFh, 000h, 000h
+db 000h, 0FFh, 000h, 000h
+db 000h, 0FFh, 0FFh, 000h
+db 000h, 000h, 000h, 000h
+; L piece 2 type 3
+db 000h, 000h, 000h, 000h
+db 0FFh, 0FFh, 0FFh, 000h
+db 0FFh, 000h, 000h, 000h
+db 000h, 000h, 000h, 000h
+; L piece 2 type 4
+db 0FFh, 0FFh, 000h, 000h
+db 000h, 0FFh, 000h, 000h
+db 000h, 0FFh, 000h, 000h
+db 000h, 000h, 000h, 000h
+
+; Block piece type 1
+db 0FFh, 0FFh, 000h, 000h
+db 0FFh, 0FFh, 000h, 000h
+db 000h, 000h, 000h, 000h
+db 000h, 000h, 000h, 000h
+; Block piece type 2
+db 0FFh, 0FFh, 000h, 000h
+db 0FFh, 0FFh, 000h, 000h
+db 000h, 000h, 000h, 000h
+db 000h, 000h, 000h, 000h
+; Block piece type 3
+db 0FFh, 0FFh, 000h, 000h
+db 0FFh, 0FFh, 000h, 000h
+db 000h, 000h, 000h, 000h
+db 000h, 000h, 000h, 000h
+; Block piece type 4
+db 0FFh, 0FFh, 000h, 000h
+db 0FFh, 0FFh, 000h, 000h
+db 000h, 000h, 000h, 000h
+db 000h, 000h, 000h, 000h
+
+; Z piece 1 type 1
+db 000h, 0FFh, 0FFh, 000h
+db 0FFh, 0FFh, 000h, 000h
+db 000h, 000h, 000h, 000h
+db 000h, 000h, 000h, 000h
+; Z piece 1 type 2
+db 000h, 0FFh, 000h, 000h
+db 000h, 0FFh, 0FFh, 000h
+db 000h, 000h, 0FFh, 000h
+db 000h, 000h, 000h, 000h
+; Z piece 1 type 3
+db 000h, 000h, 000h, 000h
+db 000h, 0FFh, 0FFh, 000h
+db 0FFh, 0FFh, 000h, 000h
+db 000h, 000h, 000h, 000h
+; Z piece 1 type 4
+db 0FFh, 000h, 000h, 000h
+db 0FFh, 0FFh, 000h, 000h
+db 000h, 0FFh, 000h, 000h
+db 000h, 000h, 000h, 000h
+
+; T piece type 1
+db 000h, 0FFh, 000h, 000h
+db 0FFh, 0FFh, 0FFh, 000h
+db 000h, 000h, 000h, 000h
+db 000h, 000h, 000h, 000h
+; T piece type 2
+db 000h, 0FFh, 000h, 000h
+db 000h, 0FFh, 0FFh, 000h
+db 000h, 0FFh, 000h, 000h
+db 000h, 000h, 000h, 000h
+; T piece type 3
+db 000h, 000h, 000h, 000h
+db 0FFh, 0FFh, 0FFh, 000h
+db 000h, 0FFh, 000h, 000h
+db 000h, 000h, 000h, 000h
+; T piece type 4
+db 000h, 0FFh, 000h, 000h
+db 0FFh, 0FFh, 000h, 000h
+db 000h, 0FFh, 000h, 000h
+db 000h, 000h, 000h, 000h
+
+; Z piece 2 type 1
+db 0FFh, 0FFh, 000h, 000h
+db 000h, 0FFh, 0FFh, 000h
+db 000h, 0FFh, 000h, 000h
+db 000h, 000h, 000h, 000h
+; Z piece 2 type 2
+db 000h, 000h, 0FFh, 000h
+db 000h, 0FFh, 0FFh, 000h
+db 000h, 0FFh, 000h, 000h
+db 000h, 000h, 000h, 000h
+; Z piece 2 type 3
+db 000h, 000h, 000h, 000h
+db 0FFh, 0FFh, 000h, 000h
+db 000h, 0FFh, 0FFh, 000h
+db 000h, 000h, 000h, 000h
+; Z piece 2 type 4
+db 000h, 0FFh, 000h, 000h
+db 0FFh, 0FFh, 000h, 000h
+db 0FFh, 000h, 000h, 000h
+db 000h, 000h, 000h, 000h
+
 hInstance HINSTANCE ?
 CommandLine LPSTR ?
 hDC HDC ?
 
-BrushTable HBRUSH 16 dup(0)
+BrushTable HBRUSH 8 dup(0)
 array dword 200 dup(0)
 
 .CODE
@@ -55,6 +202,55 @@ WillEntry proc
 	push eax
 	call ExitProcess
 WillEntry endp
+
+; 
+; InitBrushList
+; 
+
+InitBrushList proc
+	mov ebx, OFFSET BrushTable
+	push 000000000h
+	call CreateSolidBrush
+	mov [ebx], eax
+	
+	add ebx, 4
+	push 0000000FFh
+	call CreateSolidBrush
+	mov [ebx], eax
+	
+	add ebx, 4
+	push 00000FF00h
+	call CreateSolidBrush
+	mov [ebx], eax
+	
+	add ebx, 4
+	push 00000FFFFh
+	call CreateSolidBrush
+	mov [ebx], eax
+	
+	add ebx, 4
+	push 000FF0000h
+	call CreateSolidBrush
+	mov [ebx], eax
+	
+	add ebx, 4
+	push 000FF00FFh
+	call CreateSolidBrush
+	mov [ebx], eax
+	
+	add ebx, 4
+	push 000FFFF00h
+	call CreateSolidBrush
+	mov [ebx], eax
+	
+	add ebx, 4
+	push 000FFFFFFh
+	call CreateSolidBrush
+	mov [ebx], eax
+	
+	ret
+	
+InitBrushList endp
 
 ; 
 ; WinMain
@@ -96,6 +292,8 @@ WinMain proc hInst:HINSTANCE, hPrevInst:HINSTANCE, CmdLine:LPSTR, CmdShow:DWORD
 	push tempHDC
 	push hwnd
 	call ReleaseDC
+	
+	call InitBrushList
 
 MessageLoop:
 	push 0
@@ -243,6 +441,9 @@ WmPaint:
 	call DrawBoard
 	
 	;draw current block
+	mov eax, PieceColor
+	push [BrushTable+eax*4]
+	call DrawShape
 	
 	push SRCCOPY
 	push 200
@@ -356,9 +557,8 @@ DrawBoard proc dc:HDC
 	mov rect.bottom, 10
 
 nextBlock:	
-	push [array + ebx*4]
-	call CreateSolidBrush
-	push eax
+	mov eax, [array+ebx*4]
+	push [BrushTable+eax*4]
 	lea eax, rect
 	push eax
 	push dc
@@ -439,6 +639,18 @@ WmInitDialog:
 AboutDlgProc endp
 
 ; 
+; DrawShape
+; Draws the current shape at its current position/orientation using the desired brush into the compatible DC
+; 
+
+DrawShape proc brush:HBRUSH
+	local rect:RECT	
+	
+	ret
+DrawShape endp
+
+
+; 
 ; Draw into the compatible DC but then use some clipping magic to only update the important bits in the real HDC
 ; 
 
@@ -453,46 +665,21 @@ TickGame proc hwnd:HWND
 ; generate a new piece
 	call GetRand
 	mov ActivePiece, eax
+	;with a new color
 
 TickPiece:
-	;erase the piece at its old position
-	mov eax, PiecePositionY
-	mov rect.top, eax
-	add eax, 10
-	mov rect.bottom, eax
-	mov eax, PiecePositionX
-	mov rect.left, eax
-	add eax, 10
-	mov rect.right, eax
+	; erase the piece at its old position
+	push [BrushTable+0]
+	call DrawShape
 	
-	push 00h
-	call CreateSolidBrush
-	push eax
-	lea eax, rect
-	push eax
-	push dc
-	call FillRect
-	
-	;move the piece (both down and left/right - answer input) & do collision detection
+	; move it, collision detection, input, the works
 	inc PiecePositionY
 	
-	;redraw at new position
-	mov eax, PiecePositionY
-	mov rect.top, eax
-	add eax, 10
-	mov rect.bottom, eax
-	mov eax, PiecePositionX
-	mov rect.left, eax
-	add eax, 10
-	mov rect.right, eax
-	
-	push 0FF00h
-	call CreateSolidBrush
-	push eax
-	lea eax, rect
-	push eax
-	push dc
-	call FillRect
+	; redraw it
+	mov eax, PieceColor
+	push [BrushTable+eax*4]
+	call DrawShape
+	; update the new region
 		
 	push dc
 	push hwnd
