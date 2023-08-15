@@ -185,7 +185,7 @@ CommandLine LPSTR ?
 hDC HDC ?
 
 BrushTable HBRUSH 8 dup(0)
-array dword 200 dup(0)
+array dword 240 dup(0)
 
 .CODE
 
@@ -690,6 +690,23 @@ WmInitDialog:
 AboutDlgProc endp
 
 ; 
+; ShapePtr
+; returns a pointer to the data for the current shape in EAX
+; 
+
+ShapePtr proc
+	lea ebx, PieceTable
+	mov eax, ActivePiece
+	dec eax
+	shl eax, 6
+	mov ecx, PieceOrientation
+	shl ecx, 4
+	add eax, ebx
+	add eax, ecx
+	ret
+ShapePtr endp
+
+; 
 ; DrawShape
 ; Draws the current shape at its current position/orientation using the desired brush into the compatible DC
 ; 
@@ -716,14 +733,7 @@ DrawShape proc brush:HBRUSH
 	add eax, 10
 	mov rect.bottom, eax
 	
-	lea ebx, PieceTable
-	mov eax, ActivePiece
-	dec eax
-	shl eax, 6
-	mov ecx, PieceOrientation
-	shl ecx, 4
-	add eax, ebx
-	add eax, ecx
+	call ShapePtr
 	
 	xor ecx, ecx
 	xor edx, edx
@@ -766,6 +776,86 @@ DrawShape endp
 
 
 ; 
+; HittingFloor
+; Returns in ZF whether the current piece is hitting the floor or not
+;
+
+HittingFloor proc
+	call ShapePtr
+	
+	cmp PiecePositionY, 19
+	je Check19
+	cmp PiecePositionY, 18
+	je Check18
+	cmp PiecePositionY, 17
+	je Check17
+	cmp PiecePositionY, 16
+	je Check16
+	cmp eax, eax
+	ret
+	
+Check16:
+	mov eax, [eax]
+	cmp eax, 0
+	ret
+
+Check17:
+	mov eax, [eax+4]
+	cmp eax, 0
+	ret
+
+Check18:
+	mov eax, [eax+8]
+	cmp eax, 0
+	ret
+
+Check19:
+	mov eax, [eax+12]
+	cmp eax, 0
+	ret
+	
+HittingFloor endp
+
+; 
+; MergePiece
+; Takes the current piece and merges it into the playfield with its current position and color
+; Resets ActivePiece to 0
+; ESI holds the pointer to the current shape element while EBX holds the pointer to the playfield
+; ECX holds a copy that's used every time we go to a new line
+; EDX holds a counter (on every multiple of four, we roll over, on the sixteenth, we're done)
+; EAX holds temp values
+
+MergePiece proc
+	mov eax, PiecePositionY
+	mov ebx, 10
+	imul eax
+	mov ecx, PiecePositionX
+	mov ebx, OFFSET array
+	;lea ebx, [OFFSET array + ecx + eax] ;pointer to the screen data
+	mov ecx, ebx ;store a copy here
+	call ShapePtr
+	mov esi, eax
+	xor edx, edx
+	
+fill_loop:
+	mov al, [OFFSET PieceColor]
+	and al, [esi]
+	mov [ebx], al
+	inc ebx
+	inc edx
+	test edx, 3
+	jne fill_loop
+	add ecx, 10
+	mov ebx, ecx
+	cmp edx, 16
+	jne fill_loop
+
+	mov ActivePiece, 0
+	ret
+MergePiece endp
+
+
+; 
 ; Draw into the compatible DC but then use some clipping magic to only update the important bits in the real HDC
 ; The WndProc handles the actual input translation and sets appropriate state variables
 ; Actually USING the input to control the game is inside of TickGame
@@ -796,6 +886,12 @@ TickPiece:
 	; move it, collision detection, input, the works
 	inc PiecePositionY
 	
+	;first, check if the piece has hit the floor
+	call HittingFloor
+	jne HitFloor
+	
+	;or if it's hit another piece
+	
 	cmp Rotating, 1
 	je rotate_piece
 	cmp PressingLeft, 1
@@ -805,11 +901,11 @@ TickPiece:
 
 	jmp redraw
 
-move_right:
+move_right: ;prevent it from going offscreen
 	inc PiecePositionX
 	jmp redraw
 
-move_left:
+move_left: ;prevent it from going offscreen
 	dec PiecePositionX
 	jmp redraw
 
@@ -817,6 +913,15 @@ rotate_piece:
 	inc PieceOrientation
 	and PieceOrientation, 3
 	jmp redraw
+	
+HitFloor: ;make it part of the playfield & set ActivePiece to 0
+	push 0
+	push OFFSET AppName
+	push OFFSET ClassName
+	push 0
+	call MessageBoxA
+	call MergePiece
+	ret
 	
 redraw:
 	; redraw it
