@@ -840,7 +840,8 @@ MergePiece proc
 fill_loop:
 	mov al, [OFFSET PieceColor]
 	and al, [esi]
-	mov [ebx], al
+	;mov [ebx], al
+	inc esi
 	inc ebx
 	inc edx
 	test edx, 3
