@@ -825,6 +825,7 @@ HittingFloor endp
 ; ECX holds a copy that's used every time we go to a new line
 ; EDX holds a counter (on every multiple of four, we roll over, on the sixteenth, we're done)
 ; EAX holds temp values (the color is ANDed with the current shape value)
+; EDI holds the current column index? (to stop filling if we go too far)
 
 MergePiece proc
 	mov ActivePiece, 0
