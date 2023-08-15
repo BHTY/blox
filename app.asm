@@ -441,10 +441,13 @@ WmPaint:
 	call DrawBoard
 	
 	;draw current block
+	cmp ActivePiece, 0
+	je next
 	mov eax, PieceColor
 	push [BrushTable+eax*4]
 	call DrawShape
-	
+
+next:
 	push SRCCOPY
 	push 200
 	push 100
@@ -645,7 +648,64 @@ AboutDlgProc endp
 
 DrawShape proc brush:HBRUSH
 	local rect:RECT	
+	local left:DWORD
 	
+	ret
+	
+; EAX holds the pointer to the current block
+; ECX holds the current row counter
+; EDX holds the current column counter
+	
+	mov ebx, 10
+	mov eax, PiecePositionX
+	mul ebx
+	mov left, eax
+	mov rect.left, eax
+	add eax, 10
+	mov rect.right, eax
+	
+	mov eax, PiecePositionY
+	mul ebx
+	mov rect.top, eax
+	add eax, 10
+	mov rect.bottom, eax
+	
+	lea ebx, PieceTable
+	mov eax, ActivePiece
+	dec eax
+	shl eax, 6
+	mov ecx, PieceOrientation
+	shl ecx, 4
+	add eax, ebx
+	add eax, ecx
+	xor ecx, ecx
+	xor edx, edx
+
+drawloop:
+	mov ebx, [eax]
+	cmp ebx, 0
+	je next
+	push brush
+	lea ebx, rect
+	push ebx
+	push hDC
+	call FillRect
+next:
+	inc eax
+	inc edx
+	cmp edx, 4
+	jne drawloop
+	mov ebx, left
+	mov rect.left, ebx
+	add ebx, 10
+	mov rect.right, ebx
+	add rect.bottom, 10
+	add rect.top, 10
+	xor edx, edx
+	inc ecx
+	cmp ecx, 4
+	jne drawloop
+
 	ret
 DrawShape endp
 

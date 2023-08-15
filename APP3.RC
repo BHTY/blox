@@ -64,7 +64,7 @@ BEGIN
     LTEXT           "              By Will Klees",IDC_STATIC,36,26,114,17
 END
 
-SCREEN DIALOG DISCARDABLE  0, 0, 151, 48
+SCREEN DIALOG DISCARDABLE  0, 0, 151, 66
 STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
 CAPTION "Screen Size"
 FONT 8, "MS Sans Serif"
@@ -75,6 +75,8 @@ BEGIN
     EDITTEXT        IDC_EDIT2,31,22,56,14,ES_AUTOHSCROLL
     LTEXT           "X",IDC_STATIC,18,8,8,14
     LTEXT           "Y",IDC_STATIC,18,24,11,14
+    LTEXT           "Warning: Clipping may not behave correctly with non-integral scale factors.",
+                    IDC_STATIC,18,39,127,27
 END
 
 CONTROLS DIALOG DISCARDABLE  0, 0, 187, 73
