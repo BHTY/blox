@@ -856,6 +856,7 @@ TickGame proc hwnd:HWND
 	mov PieceColor, eax
 	mov PiecePositionY, -2
 	mov PiecePositionX, 0 ;this should be random
+	mov PieceOrientation, 0
 
 TickPiece:
 	; erase the piece at its old position
