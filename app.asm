@@ -25,8 +25,8 @@ PiecePositionX dd 0
 PiecePositionY dd 0
 Score dd 0
 
-ClientSizeX dd 200
-ClientSizeY dd 400
+ClientSizeX dd 100
+ClientSizeY dd 200
 
 ; Controls
 Rotating dd 0
@@ -185,7 +185,7 @@ CommandLine LPSTR ?
 hDC HDC ?
 
 BrushTable HBRUSH 8 dup(0)
-array dword 240 dup(0)
+array byte 240 dup(0)
 
 .CODE
 
@@ -608,7 +608,8 @@ DrawBoard proc dc:HDC
 	mov rect.bottom, 10
 
 nextBlock:	
-	mov eax, [array+ebx*4]
+	xor eax, eax
+	mov al, [array+ebx]
 	push [BrushTable+eax*4]
 	lea eax, rect
 	push eax
@@ -658,8 +659,8 @@ FillBoard proc
 	
 fill_loop:
 	call GetRand
-	mov [ebx], eax
-	add ebx, 4
+	mov [ebx], al
+	inc ebx
 	dec ecx
 	jne fill_loop
 	
@@ -828,19 +829,24 @@ HittingFloor endp
 MergePiece proc
 	mov eax, PiecePositionY
 	mov ebx, 10
-	imul eax
+	mul ebx
 	mov ecx, PiecePositionX
-	mov ebx, OFFSET array
-	;lea ebx, [OFFSET array + ecx + eax] ;pointer to the screen data
+	;mov ebx, OFFSET array
+	lea ebx, [array + ecx + eax] ;pointer to the screen data
 	mov ecx, ebx ;store a copy here
+	push ebx
+	push ecx
 	call ShapePtr
+	pop ecx
+	pop ebx
 	mov esi, eax
 	xor edx, edx
 	
 fill_loop:
 	mov al, [OFFSET PieceColor]
 	and al, [esi]
-	;mov [ebx], al
+	mov al, 002h
+	mov [ebx], al
 	inc esi
 	inc ebx
 	inc edx
